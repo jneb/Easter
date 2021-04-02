@@ -21,12 +21,14 @@ def easter(Y):
     i, k = divmod(c, 4)
     # slow shift over centuries: 6 for 1900-2100
     g = (8 * b + 13) // 25
-    # 19 year moon cycle
+    # 19 year Metonic cycle
     a = Y % 19
-    # Probably nobody knows what's going on here
+    # moon cycle
     h = (19 * a + b - d - g + 15) % 30
+    # week cycle
     l = (32 + 2 * e + 2 * i - h - k) % 7
     m = (a + 11 * h + 19 * l) // 433
+    # date is now determined by h + l - 7 m
     month = (h + l - 7 * m + 90) // 25
     day = (h + l - 7 * m + 33 * month + 19) % 32
     return date(Y, month, day)
