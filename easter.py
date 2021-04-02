@@ -19,8 +19,7 @@ def easter(Y):
     """
     a = Y % 19
     b, c = divmod(Y, 100)
-    d = b // 4
-    e = b % 4
+    d, e = divmod(b, 4)
     f = (b + 8) // 25
     g = (b - f + 1) //3
     h = (19 * a + b - d - g + 15) % 30
