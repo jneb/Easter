@@ -71,14 +71,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description='Calculate good friday for a given year')
     parser.add_argument('year', metavar='Y', type=int, nargs='?',
-        help='Year for which to calculate the good friday date')
+        help='year for which to calculate the good friday date')
     parser.add_argument('-v', '--verbose', action='store_true',
-        help='Show all related Christian calendar days')
+        help='show all related Christian calendar days')
     parser.add_argument('-t', '--test', action='store_true',
-        help='Self test')
+        help='self test')
     parser.add_argument('-o', '--on', nargs='?', metavar='MMDD',
         const='0404',
-        help='Print years where easter falls on a given date')
+        help='print years where easter falls on a given date')
     args = parser.parse_args()
     if args.test:
         import doctest
