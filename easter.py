@@ -21,32 +21,34 @@ def easter(Y):
     i, k = divmod(c, 4)
     # slow shift over centuries: 6 for 1900-2100
     g = (8 * b + 13) // 25
-    # 19 year Metonic cycle
+    # 19 year moon cycle
     a = Y % 19
-    # moon cycle
+    # Probably nobody knows what's going on here
     h = (19 * a + b - d - g + 15) % 30
-    # week cycle
     l = (32 + 2 * e + 2 * i - h - k) % 7
     m = (a + 11 * h + 19 * l) // 433
-    # date is now determined by h + l - 7 m
     month = (h + l - 7 * m + 90) // 25
     day = (h + l - 7 * m + 33 * month + 19) % 32
     return date(Y, month, day)
 
-def hanna():
-    """Find dates from 1999 on where Good Friday is on April 2nd.
-    >>> hanna()
-    1999
-    2010
-    2021
-    2083
-    2094
+def on(mmdd='404'):
+    """Print years between 1964 and 2150 where eastern fall on a given date.
+    First digit of month may be omitted
+    >>> on()
+    Years: 1999, 2010, 2021, 2083, 2094
     """
-    for y in range(1999, 2100):
-        if easter(y) == date(y, 4, 4): print(y)
+    mm, dd = int(mmdd[:-2]), int(mmdd[-2:])
+    years = [y for y in range(1964, 2150) if easter(y) == date(y, mm, dd)]
+    if years:
+        print("Years:", ', '.join(map(str, years)))
+    else:
+        print("No year has easter on this month and day.")
 
 def main(year, verbose=False):
     """Main program
+    >>> main(1999)
+    Easter day for year 1999: 04 April
+    Good friday: 02 April
     """
     Y = year or date.today().year
     if Y < 100: Y += 2000
@@ -74,13 +76,16 @@ if __name__ == "__main__":
         help='Show all related Christian calendar days')
     parser.add_argument('-t', '--test', action='store_true',
         help='Self test')
-    parser.add_argument('--hanna', action='store_true',
-        help=argparse.SUPPRESS)
+    parser.add_argument('-o', '--on', nargs='?', metavar='MMDD',
+        const='0404',
+        help='Print years where easter falls on a given date')
     args = parser.parse_args()
     if args.test:
         import doctest
         doctest.testmod()
-    elif args.hanna:
-        hanna()
+    elif args.on:
+        try: on(args.on)
+        except ValueError:
+            argparse.error('Invalid month, day specifier: ' + args.on)
     else:
         main(args.year, args.verbose)
