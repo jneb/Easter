@@ -86,6 +86,6 @@ if __name__ == "__main__":
     elif args.on:
         try: on(args.on)
         except ValueError:
-            argparse.error('Invalid month, day specifier: ' + args.on)
+            parser.error('Invalid month & day specifier: ' + args.on)
     else:
         main(args.year, args.verbose)
